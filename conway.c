@@ -36,6 +36,7 @@ int main(int argc, char **argv)
   };
 
   set(field, 3, 3, pattern, 6, 6);
+  // spawn(field, "beacon", 6, 6);
   while (true) {
     simulate(field, next_state);
     render(field);
@@ -69,6 +70,87 @@ void set(struct Field *field, int width, int height, bool pattern[width][height]
       int indey = wrap(j + offset_y, field->height);
       field->state[index * field->width + indey] = pattern[i][j];
     }
+  }
+}
+
+void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
+{
+  if (strcmp(pattern_name, "block") == 0) {
+    int width = 2, height = 2;
+    bool pattern[2][2] = {
+      {1, 1},
+      {1, 1},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "beehive") == 0) {
+    int width = 3, height = 4;
+    bool pattern[3][4] = {
+      {0, 1, 1, 0},
+      {1, 0, 0, 1},
+      {0, 1, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "loaf") == 0) {
+    int width = 4, height = 4;
+    bool pattern[4][4] = {
+      {0, 1, 1, 0},
+      {1, 0, 0, 1},
+      {0, 1, 0, 1},
+      {0, 0, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "boat") == 0) {
+    int width = 3, height = 3;
+    bool pattern[3][3] = {
+      {1, 1, 0},
+      {1, 0, 1},
+      {0, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "tub") == 0) {
+    int width = 3, height = 3;
+    bool pattern[3][3] = {
+      {0, 1, 0},
+      {1, 0, 1},
+      {0, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "blinker") == 0) {
+    int width = 1, height = 3;
+    bool pattern[1][3] = {
+      {1, 1, 1},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "toad") == 0) {
+    int width = 2, height = 4;
+    bool pattern[2][4] = {
+      {0, 1, 1, 1},
+      {1, 1, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "beacon") == 0) {
+    int width = 4, height = 4;
+    bool pattern[4][4] = {
+      {1, 1, 0, 0},
+      {1, 0, 0, 0},
+      {0, 0, 0, 1},
+      {0, 0, 1, 1},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
+  } else if (strcmp(pattern_name, "pulsar") == 0) {
+  } else if (strcmp(pattern_name, "pentadecathlon") == 0) {
+  } else if (strcmp(pattern_name, "glider") == 0) {
+  } else if (strcmp(pattern_name, "lightweight-spaceship") == 0) {
+  } else if (strcmp(pattern_name, "middleweight-spaceship") == 0) {
+  } else if (strcmp(pattern_name, "heavyweight-spaceship") == 0) {
   }
 }
 
