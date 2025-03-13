@@ -9,7 +9,7 @@
 int main(int argc, char **argv)
 {
   int opt;
-  int width = 15, height = 15;
+  int width = 21, height = 21;
   static struct option long_options[] = {
     {"width", required_argument, NULL, 'w'},
     {"height", required_argument, NULL, 'h'},
@@ -35,8 +35,21 @@ int main(int argc, char **argv)
     {0, 1, 1},
   };
 
-  set(field, 3, 3, pattern, 6, 6);
-  // spawn(field, "beacon", 6, 6);
+  set(field, 3, 3, pattern, 9, 9);
+  // spawn(field, "block", 9, 9);
+  // spawn(field, "beehive", 9, 8);
+  // spawn(field, "loaf", 8, 8);
+  // spawn(field, "boat", 9, 9);
+  // spawn(field, "tub", 9, 9);
+  // spawn(field, "blinker", 10, 9);
+  // spawn(field, "toad", 9, 8);
+  // spawn(field, "beacon", 8, 8);
+  // spawn(field, "pulsar", 4, 4);
+  // spawn(field, "pentadecathlon", 5, 9);
+  // spawn(field, "glider", 9, 9);
+  // spawn(field, "lightweight-spaceship", 8, 8);
+  // spawn(field, "middleweight-spaceship", 8, 7);
+  // spawn(field, "heavyweight-spaceship", 8, 7);
   while (true) {
     simulate(field, next_state);
     render(field);
@@ -139,18 +152,88 @@ void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
     int width = 4, height = 4;
     bool pattern[4][4] = {
       {1, 1, 0, 0},
-      {1, 0, 0, 0},
-      {0, 0, 0, 1},
+      {1, 1, 0, 0},
+      {0, 0, 1, 1},
       {0, 0, 1, 1},
     };
 
     set(field, width, height, pattern, offset_x, offset_y);
   } else if (strcmp(pattern_name, "pulsar") == 0) {
+    int width = 13, height = 13;
+    bool pattern[13][13] = {
+      {0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
+      {0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0},
+      {1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+      {0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
   } else if (strcmp(pattern_name, "pentadecathlon") == 0) {
+    int width = 10, height = 3;
+    bool pattern[10][3] = {
+      {0, 1, 0},
+      {0, 1, 0},
+      {1, 0, 1},
+      {0, 1, 0},
+      {0, 1, 0},
+      {0, 1, 0},
+      {0, 1, 0},
+      {1, 0, 1},
+      {0, 1, 0},
+      {0, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
   } else if (strcmp(pattern_name, "glider") == 0) {
+    int width = 3, height = 3;
+    bool pattern[3][3] = {
+      {1, 0, 0},
+      {0, 1, 1},
+      {1, 1, 0},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
   } else if (strcmp(pattern_name, "lightweight-spaceship") == 0) {
+    int width = 4, height = 5;
+    bool pattern[4][5] = {
+      {1, 0, 0, 1, 0},
+      {0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 1},
+      {0, 1, 1, 1, 1},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
   } else if (strcmp(pattern_name, "middleweight-spaceship") == 0) {
+    int width = 5, height = 6;
+    bool pattern[5][6] = {
+      {0, 0, 1, 0, 0, 0},
+      {1, 0, 0, 0, 1, 0},
+      {0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 1},
+      {0, 1, 1, 1, 1, 1},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
   } else if (strcmp(pattern_name, "heavyweight-spaceship") == 0) {
+    int width = 5, height = 7;
+    bool pattern[5][7] = {
+      {0, 0, 1, 1, 0, 0, 0},
+      {1, 0, 0, 0, 0, 1, 0},
+      {0, 0, 0, 0, 0, 0, 1},
+      {1, 0, 0, 0, 0, 0, 1},
+      {0, 1, 1, 1, 1, 1, 1},
+    };
+
+    set(field, width, height, pattern, offset_x, offset_y);
   }
 }
 
@@ -209,7 +292,7 @@ void render(struct Field *field)
   clear();
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
-      printf("%s ", field->state[i * field->width + j] ? "#" : " ");
+      printf("%s ", field->state[i * field->width + j] ? "#" : "-");
     }
 
     printf("\n");
