@@ -9,6 +9,13 @@ struct Field {
   bool state[];
 };
 
+struct Pattern {
+  char *name;
+  int width;
+  int height;
+  bool state[13][13];
+};
+
 struct Field *init(int width, int height);
 
 void set(struct Field *field, int width, int height, bool pattern[width][height], int offset_x, int offset_y);
