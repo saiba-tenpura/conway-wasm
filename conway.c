@@ -27,6 +27,7 @@ int main(int argc, char **argv)
     }
   }
 
+  int generation = 0;
   struct Field *field = init(width, height);
   bool next_state[width][height];
   bool pattern[13][13] = {
@@ -52,8 +53,9 @@ int main(int argc, char **argv)
   // spawn(field, "heavyweight-spaceship", 8, 7);
   while (true) {
     simulate(field, next_state);
-    render(field);
+    render(field, generation);
     memcpy(field->state, next_state, width * height * sizeof(bool));
+    generation++;
     usleep(100000);
   }
 
@@ -274,16 +276,24 @@ int wrap(int value, int size)
   return value;
 }
 
-void render(struct Field *field)
+void render(struct Field *field, int generation)
 {
   clear();
+  int population = 0;
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
+      if (field->state[i * field->width + j]) {
+        population++;
+      }
+
       printf("%s ", field->state[i * field->width + j] ? "#" : "-");
     }
 
     printf("\n");
   }
+
+  printf("Generation: %d\n", generation);
+  printf("Population: %d\n", population);
 }
 
 void clear()

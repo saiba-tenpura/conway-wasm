@@ -21,7 +21,7 @@ struct Field *init(int width, int height);
 void set(struct Field *field, int width, int height, bool pattern[width][height], int offset_x, int offset_y);
 void spawn(struct Field *field, char* pattern, int offset_x, int offset_y);
 void simulate(struct Field *field, bool next_state[field->width][field->height]);
-void render(struct Field *field);
+void render(struct Field *field, int generation);
 void clear();
 
 int survey(struct Field *field, int x, int y);
