@@ -5,6 +5,7 @@
 #include <string.h>
 #include <getopt.h>
 #include <unistd.h>
+#include <emscripten.h>
 
 int main(int argc, char **argv)
 {
@@ -56,7 +57,8 @@ int main(int argc, char **argv)
     render(field, generation);
     memcpy(field->state, next_state, width * height * sizeof(bool));
     generation++;
-    usleep(100000);
+    // usleep(100000);
+    emscripten_sleep(1000);
   }
 
   free(field);
