@@ -3,31 +3,15 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <getopt.h>
 #include <unistd.h>
-#include <emscripten.h>
+#include <raylib.h>
+
+#define CELL_SIZE 16
+#define CELL_MARGIN 1
 
 int main(int argc, char **argv)
 {
-  int opt;
   int width = 21, height = 21;
-  static struct option long_options[] = {
-    {"width", required_argument, NULL, 'w'},
-    {"height", required_argument, NULL, 'h'},
-    {NULL, 0, NULL, 0},
-  };
-
-  while ((opt = getopt_long(argc, argv, "w:h:", long_options, NULL)) != -1) {
-    switch (opt) {
-      case 'w':
-        width = strtol(optarg, NULL, 10);
-        break;
-      case 'h':
-        height = strtol(optarg, NULL, 10);
-        break;
-    }
-  }
-
   int generation = 0;
   struct Field *field = init(width, height);
   bool next_state[width][height];
@@ -52,15 +36,23 @@ int main(int argc, char **argv)
   // spawn(field, "lightweight-spaceship", 8, 8);
   // spawn(field, "middleweight-spaceship", 8, 7);
   // spawn(field, "heavyweight-spaceship", 8, 7);
-  while (true) {
-    simulate(field, next_state);
+
+  // const int screenWidth = 800;
+  // const int screenHeight = 800;
+  InitWindow(21 * CELL_SIZE + CELL_MARGIN, 21 * CELL_SIZE + CELL_MARGIN, "Conway's Game of Life - WASM");
+  SetTargetFPS(60);
+
+  while (!WindowShouldClose()) {
+    BeginDrawing();
+    ClearBackground(BLACK);
     render(field, generation);
+    simulate(field, next_state);
     memcpy(field->state, next_state, width * height * sizeof(bool));
     generation++;
-    // usleep(100000);
-    emscripten_sleep(1000);
+    EndDrawing();
   }
 
+  CloseWindow();
   free(field);
   return 0;
 }
@@ -280,25 +272,17 @@ int wrap(int value, int size)
 
 void render(struct Field *field, int generation)
 {
-  clear();
-  int population = 0;
+  // int population = 0;
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
-      if (field->state[i * field->width + j]) {
-        population++;
-      }
+      // if (field->state[i * field->width + j]) {
+      //   population++;
+      // }
 
-      printf("%s ", field->state[i * field->width + j] ? "#" : "-");
+      DrawRectangle(i * CELL_SIZE + CELL_MARGIN, j * CELL_SIZE + CELL_MARGIN, CELL_SIZE - CELL_MARGIN, CELL_SIZE - CELL_MARGIN, field->state[i * field->width + j] ? RAYWHITE : DARKGRAY);
     }
-
-    printf("\n");
   }
 
-  printf("Generation: %d\n", generation);
-  printf("Population: %d\n", population);
-}
-
-void clear()
-{
-  printf("\e[1;1H\e[2J");
+  // printf("Generation: %d\n", generation);
+  // printf("Population: %d\n", population);
 }
