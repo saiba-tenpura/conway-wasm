@@ -75,9 +75,9 @@ void set(struct Field *field, int width, int height, bool pattern[13][13], int o
 {
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
-      int index = wrap(i + offset_x, field->width);
-      int indey = wrap(j + offset_y, field->height);
-      field->state[index * field->width + indey] = pattern[i][j];
+      int x = wrap(i + offset_x, field->width);
+      int y = wrap(j + offset_y, field->height);
+      field->state[x * field->height + y] = pattern[i][j];
     }
   }
 }
@@ -226,12 +226,12 @@ void simulate(struct Field *field, bool next_state[field->width][field->height])
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
       count = survey(field, i, j);
-      if (field->state[i * field->width + j] == true && (count < 2 || count > 3)) {
+      if (field->state[i * field->height + j] == true && (count < 2 || count > 3)) {
         next_state[i][j] = false;
-      } else if (field->state[i * field->width + j] == false && count == 3) {
+      } else if (field->state[i * field->height + j] == false && count == 3) {
         next_state[i][j] = true;
       } else {
-        next_state[i][j] = field->state[i * field->width + j];
+        next_state[i][j] = field->state[i * field->height + j];
       }
     }
   }
@@ -248,7 +248,7 @@ int survey(struct Field *field, int x, int y)
 
       int index = wrap(i, field->width);
       int indey = wrap(j, field->height);
-      if (field->state[index * field->width + indey]) {
+      if (field->state[index * field->height + indey]) {
         count++;
       }
     }
@@ -275,11 +275,11 @@ void render(struct Field *field, int generation)
   // int population = 0;
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
-      // if (field->state[i * field->width + j]) {
+      // if (field->state[i * field->height + j]) {
       //   population++;
       // }
 
-      DrawRectangle(i * CELL_SIZE + CELL_MARGIN, j * CELL_SIZE + CELL_MARGIN, CELL_SIZE - CELL_MARGIN, CELL_SIZE - CELL_MARGIN, field->state[i * field->width + j] ? RAYWHITE : DARKGRAY);
+      DrawRectangle(i * CELL_SIZE + CELL_MARGIN, j * CELL_SIZE + CELL_MARGIN, CELL_SIZE - CELL_MARGIN, CELL_SIZE - CELL_MARGIN, field->state[i * field->height + j] ? RAYWHITE : DARKGRAY);
     }
   }
 
