@@ -11,31 +11,31 @@
 
 int main(int argc, char **argv)
 {
-  int width = 21, height = 21;
   int generation = 0;
+  int width = 21, height = 21;
   struct Field *field = init(width, height);
   bool next_state[width][height];
   bool pattern[13][13] = {
     {0, 1, 0},
-    {1, 1, 0},
-    {0, 1, 1},
+    {1, 1, 1},
+    {0, 0, 1},
   };
 
   set(field, 3, 3, pattern, 9, 9);
   // spawn(field, "block", 9, 9);
-  // spawn(field, "beehive", 9, 8);
+  // spawn(field, "beehive", 8, 9);
   // spawn(field, "loaf", 8, 8);
   // spawn(field, "boat", 9, 9);
   // spawn(field, "tub", 9, 9);
-  // spawn(field, "blinker", 10, 9);
-  // spawn(field, "toad", 9, 8);
+  // spawn(field, "blinker", 9, 1);
+  // spawn(field, "toad", 8, 9);
   // spawn(field, "beacon", 8, 8);
   // spawn(field, "pulsar", 4, 4);
-  // spawn(field, "pentadecathlon", 5, 9);
+  // spawn(field, "pentadecathlon", 9, 5);
   // spawn(field, "glider", 9, 9);
   // spawn(field, "lightweight-spaceship", 8, 8);
-  // spawn(field, "middleweight-spaceship", 8, 7);
-  // spawn(field, "heavyweight-spaceship", 8, 7);
+  // spawn(field, "middleweight-spaceship", 7, 8);
+  // spawn(field, "heavyweight-spaceship", 7, 8);
 
   // const int screenWidth = 800;
   // const int screenHeight = 800;
@@ -92,18 +92,19 @@ void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
       },
     },
     {
-      "beehive", 3, 5, {
-        {0, 1, 1, 0},
-        {1, 0, 0, 1},
-        {0, 1, 1, 0},
+      "beehive", 4, 3, {
+        {0, 1, 0},
+        {1, 0, 1},
+        {1, 0, 1},
+        {0, 1, 0},
       },
     },
     {
       "loaf", 4, 4, {
-        {0, 1, 1, 0},
+        {0, 1, 0, 0},
+        {1, 0, 1, 0},
         {1, 0, 0, 1},
-        {0, 1, 0, 1},
-        {0, 0, 1, 0},
+        {0, 1, 1, 0},
       },
     },
     {
@@ -126,9 +127,11 @@ void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
       },
     },
     {
-      "toad", 2, 4, {
-        {0, 1, 1, 1},
-        {1, 1, 1, 0},
+      "toad", 4, 2, {
+        {0, 1},
+        {1, 1},
+        {1, 1},
+        {1, 0},
       },
     },
     {
@@ -157,50 +160,47 @@ void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
       },
     },
     {
-      "pentadecathlon", 10, 3, {
-        {0, 1, 0},
-        {0, 1, 0},
-        {1, 0, 1},
-        {0, 1, 0},
-        {0, 1, 0},
-        {0, 1, 0},
-        {0, 1, 0},
-        {1, 0, 1},
-        {0, 1, 0},
-        {0, 1, 0},
+      "pentadecathlon", 3, 10, {
+        {0, 0, 1, 0, 0, 0, 0, 1, 0, 0},
+        {1, 1, 0, 1, 1, 1, 1, 0, 1, 1},
+        {0, 0, 1, 0, 0, 0, 0, 1, 0, 0},
       },
     },
     {
       "glider", 3, 3, {
-        {1, 0, 0},
+        {1, 0, 1},
         {0, 1, 1},
-        {1, 1, 0},
+        {0, 1, 0},
       },
     },
     {
-      "lightweight-spaceship", 4, 5, {
-        {1, 0, 0, 1, 0},
+      "lightweight-spaceship", 5, 4, {
+        {1, 0, 1, 0},
+        {0, 0, 0, 1},
+        {0, 0, 0, 1},
+        {1, 0, 0, 1},
+        {0, 1, 1, 1},
+      },
+    },
+    {
+      "middleweight-spaceship", 6, 5, {
+        {0, 1, 0, 1, 0},
         {0, 0, 0, 0, 1},
         {1, 0, 0, 0, 1},
-        {0, 1, 1, 1, 1},
+        {0, 0, 0, 0, 1},
+        {0, 1, 0, 0, 1},
+        {0, 0, 1, 1, 1},
       },
     },
     {
-      "middleweight-spaceship", 5, 6, {
-        {0, 0, 1, 0, 0, 0},
-        {1, 0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 1},
-        {0, 1, 1, 1, 1, 1},
-      },
-    },
-    {
-      "heavyweight-spaceship", 5, 7, {
-        {0, 0, 1, 1, 0, 0, 0},
-        {1, 0, 0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 1},
-        {0, 1, 1, 1, 1, 1, 1},
+      "heavyweight-spaceship", 7, 5, {
+        {0, 1, 0, 1, 0},
+        {0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 1},
+        {1, 0, 0, 0, 1},
+        {0, 0, 0, 0, 1},
+        {0, 1, 0, 0, 1},
+        {0, 0, 1, 1, 1},
       },
     },
   };
