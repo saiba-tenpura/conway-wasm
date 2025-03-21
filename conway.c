@@ -12,7 +12,7 @@
 int main(int argc, char **argv)
 {
   int generation = 0;
-  int width = 21, height = 21;
+  int width = 128, height = 72;
   struct Field *field = init(width, height);
   bool next_state[width][height];
   bool pattern[13][13] = {
@@ -37,14 +37,14 @@ int main(int argc, char **argv)
   // spawn(field, "middleweight-spaceship", 7, 8);
   // spawn(field, "heavyweight-spaceship", 7, 8);
 
-  // const int screenWidth = 800;
-  // const int screenHeight = 800;
-  InitWindow(21 * CELL_SIZE + CELL_MARGIN, 21 * CELL_SIZE + CELL_MARGIN, "Conway's Game of Life - WASM");
-  SetTargetFPS(60);
+  const int windowWidth = width * (CELL_SIZE + CELL_MARGIN);
+  const int windowHeight = height * (CELL_SIZE + CELL_MARGIN);
+  InitWindow(windowWidth, windowHeight, "Conway's Game of Life - WASM");
+  SetTargetFPS(10);
 
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(BLACK);
+    ClearBackground(DARKGRAY);
     render(field, generation);
     simulate(field, next_state);
     memcpy(field->state, next_state, width * height * sizeof(bool));
@@ -272,6 +272,9 @@ int wrap(int value, int size)
 
 void render(struct Field *field, int generation)
 {
+  int pos = CELL_SIZE + CELL_MARGIN;
+  int length = CELL_SIZE - CELL_MARGIN;
+
   // int population = 0;
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
@@ -279,7 +282,7 @@ void render(struct Field *field, int generation)
       //   population++;
       // }
 
-      DrawRectangle(i * CELL_SIZE + CELL_MARGIN, j * CELL_SIZE + CELL_MARGIN, CELL_SIZE - CELL_MARGIN, CELL_SIZE - CELL_MARGIN, field->state[i * field->height + j] ? RAYWHITE : DARKGRAY);
+      DrawRectangle(i * pos, j * pos, length, length, field->state[i * field->height + j] ? RAYWHITE : BLACK);
     }
   }
 
