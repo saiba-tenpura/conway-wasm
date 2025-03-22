@@ -275,17 +275,16 @@ void render(struct Field *field, int generation)
   int pos = CELL_SIZE + CELL_MARGIN;
   int length = CELL_SIZE - CELL_MARGIN;
 
-  // int population = 0;
+  int population = 0;
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
-      // if (field->state[i * field->height + j]) {
-      //   population++;
-      // }
+      if (field->state[i * field->height + j]) {
+        population++;
+      }
 
       DrawRectangle(i * pos, j * pos, length, length, field->state[i * field->height + j] ? RAYWHITE : BLACK);
     }
   }
 
-  // printf("Generation: %d\n", generation);
-  // printf("Population: %d\n", population);
+  DrawText(TextFormat("Generation: %d\nPopulation: %d", generation, population), 10, 10, 26, RAYWHITE);
 }
