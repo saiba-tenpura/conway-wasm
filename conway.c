@@ -37,8 +37,8 @@ int main(int argc, char **argv)
   // spawn(field, "middleweight-spaceship", 7, 8);
   // spawn(field, "heavyweight-spaceship", 7, 8);
 
-  const int windowWidth = width * (CELL_SIZE + CELL_MARGIN);
-  const int windowHeight = height * (CELL_SIZE + CELL_MARGIN);
+  const int windowWidth = width * CELL_SIZE + CELL_MARGIN;
+  const int windowHeight = height * CELL_SIZE + CELL_MARGIN;
   InitWindow(windowWidth, windowHeight, "Conway's Game of Life - WASM");
   SetTargetFPS(10);
 
@@ -272,8 +272,8 @@ int wrap(int value, int size)
 
 void render(struct Field *field, int generation)
 {
-  int pos = CELL_SIZE + CELL_MARGIN;
-  int length = CELL_SIZE - CELL_MARGIN;
+  int offset_x, offset_y;
+  int size = CELL_SIZE - CELL_MARGIN;
 
   int population = 0;
   for (int i = 0; i < field->width; i++) {
@@ -282,7 +282,9 @@ void render(struct Field *field, int generation)
         population++;
       }
 
-      DrawRectangle(i * pos, j * pos, length, length, field->state[i * field->height + j] ? RAYWHITE : BLACK);
+      offset_x = i * CELL_SIZE + CELL_MARGIN;
+      offset_y = j * CELL_SIZE + CELL_MARGIN;
+      DrawRectangle(offset_x, offset_y, size, size, field->state[i * field->height + j] ? RAYWHITE : BLACK);
     }
   }
 
