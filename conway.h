@@ -24,6 +24,7 @@ void simulate(struct Field *field, bool next_state[field->width][field->height])
 void render(struct Field *field, int generation);
 
 int survey(struct Field *field, int x, int y);
+int clamp(int value, int min, int max);
 int wrap(int value, int size);
 
 #endif /* CONWAY_H */
