@@ -9,7 +9,7 @@
 #define CELL_SIZE 16
 #define CELL_MARGIN 1
 
-int main(int argc, char **argv)
+int main()
 {
   bool paused = true;
   int generation = 0;
@@ -38,12 +38,14 @@ int main(int argc, char **argv)
   // spawn(field, "middleweight-spaceship", 7, 8);
   // spawn(field, "heavyweight-spaceship", 7, 8);
 
+  float delta_time = 0.0f;
+  float update_interval = 0.05f;
   const int windowWidth = width * CELL_SIZE + CELL_MARGIN;
   const int windowHeight = height * CELL_SIZE + CELL_MARGIN;
   InitWindow(windowWidth, windowHeight, "Conway's Game of Life - WASM");
   SetTargetFPS(60);
 
-  while (!WindowShouldClose()) {
+  while (! WindowShouldClose()) {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       int x = clamp(GetMouseX() / CELL_SIZE, 0, width - 1);
       int y = clamp(GetMouseY() / CELL_SIZE, 0, height - 1);
@@ -57,10 +59,13 @@ int main(int argc, char **argv)
     BeginDrawing();
     ClearBackground(DARKGRAY);
     render(field, generation);
-    if (! paused) {
+    if (! paused && delta_time > update_interval) {
       simulate(field, next_state);
       memcpy(field->state, next_state, width * height * sizeof(bool));
       generation++;
+      delta_time = 0.0f;
+    } else {
+      delta_time += GetFrameTime();
     }
 
     EndDrawing();
