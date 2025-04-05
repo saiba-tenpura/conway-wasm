@@ -1,3 +1,4 @@
+#include "field.h"
 #include "conway.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -14,7 +15,7 @@ int main()
   bool paused = true;
   int generation = 0;
   int width = 128, height = 72;
-  struct Field *field = init(width, height);
+  struct Field *field = init_field(width, height);
   bool next_state[width][height];
 
   // bool pattern[13][13] = {
@@ -60,7 +61,7 @@ int main()
     ClearBackground(DARKGRAY);
     render(field, generation);
     if (! paused && delta_time > update_interval) {
-      simulate(field, next_state);
+      field->field_ops->simulate(field, next_state);
       memcpy(field->state, next_state, width * height * sizeof(bool));
       generation++;
       delta_time = 0.0f;
@@ -76,31 +77,7 @@ int main()
   return 0;
 }
 
-struct Field *init(int width, int height)
-{
-  struct Field *field = malloc(sizeof(struct Field*) + width * height * sizeof(bool));
-  if (field == NULL) {
-    printf("Failed to allocate memory for field!");
-    exit(EXIT_FAILURE);
-  }
-
-  field->width = width;
-  field->height = height;
-  memset(field->state, false, width * height * sizeof(bool));
-  return field;
-}
-
-void set(struct Field *field, int width, int height, bool pattern[13][13], int offset_x, int offset_y)
-{
-  for (int i = 0; i < width; i++) {
-    for (int j = 0; j < height; j++) {
-      int x = wrap(i + offset_x, field->width);
-      int y = wrap(j + offset_y, field->height);
-      field->state[x * field->height + y] = pattern[i][j];
-    }
-  }
-}
-
+/*
 void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
 {
   struct Pattern patterns[] = {
@@ -238,62 +215,7 @@ void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
 
   set(field, pattern->width, pattern->height, pattern->state, offset_x, offset_y);
 }
-
-void simulate(struct Field *field, bool next_state[field->width][field->height])
-{
-  int count = 0;
-  for (int i = 0; i < field->width; i++) {
-    for (int j = 0; j < field->height; j++) {
-      count = survey(field, i, j);
-      if (field->state[i * field->height + j] == true && (count < 2 || count > 3)) {
-        next_state[i][j] = false;
-      } else if (field->state[i * field->height + j] == false && count == 3) {
-        next_state[i][j] = true;
-      } else {
-        next_state[i][j] = field->state[i * field->height + j];
-      }
-    }
-  }
-}
-
-int survey(struct Field *field, int x, int y)
-{
-  int count = 0;
-  for (int i = x - 1; i <= x + 1; i++) {
-    for (int j = y - 1; j <= y + 1; j++) {
-      if (i == x && j == y) {
-         continue;
-      }
-
-      int index = wrap(i, field->width);
-      int indey = wrap(j, field->height);
-      if (field->state[index * field->height + indey]) {
-        count++;
-      }
-    }
-  }
-
-  return count;
-}
-
-int clamp(int value, int min, int max)
-{
-  const int temp = value < min ? min : value;
-  return temp > max ? max : temp;
-}
-
-int wrap(int value, int size)
-{
-  if (value < 0) {
-    return value + size;
-  }
-
-  if (value > size - 1) {
-    return value - size;
-  }
-
-  return value;
-}
+*/
 
 void render(struct Field *field, int generation)
 {
