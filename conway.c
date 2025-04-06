@@ -9,11 +9,11 @@
 
 #define CELL_SIZE 16
 #define CELL_MARGIN 1
+#define TARGET_FPS 60
 
 int main()
 {
   bool paused = true;
-  int generation = 0;
   int width = 128, height = 72;
   struct Field *field = init_field(width, height);
   bool next_state[width][height];
@@ -23,7 +23,7 @@ int main()
   //   {1, 1, 1},
   //   {0, 0, 1},
   // };
-  // set(field, 3, 3, pattern, 9, 9);
+  // field->field_ops->set(field, 3, 3, pattern, 9, 9);
   // spawn(field, "block", 9, 9);
   // spawn(field, "beehive", 8, 9);
   // spawn(field, "loaf", 8, 8);
@@ -44,7 +44,7 @@ int main()
   const int windowWidth = width * CELL_SIZE + CELL_MARGIN;
   const int windowHeight = height * CELL_SIZE + CELL_MARGIN;
   InitWindow(windowWidth, windowHeight, "Conway's Game of Life - WASM");
-  SetTargetFPS(60);
+  SetTargetFPS(TARGET_FPS);
 
   while (! WindowShouldClose()) {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -59,11 +59,10 @@ int main()
 
     BeginDrawing();
     ClearBackground(DARKGRAY);
-    render(field, generation);
+    render(field);
     if (! paused && delta_time > update_interval) {
       field->field_ops->simulate(field, next_state);
       memcpy(field->state, next_state, width * height * sizeof(bool));
-      generation++;
       delta_time = 0.0f;
     } else {
       delta_time += GetFrameTime();
@@ -77,7 +76,6 @@ int main()
   return 0;
 }
 
-/*
 void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
 {
   struct Pattern patterns[] = {
@@ -215,9 +213,8 @@ void spawn(struct Field *field, char* pattern_name, int offset_x, int offset_y)
 
   set(field, pattern->width, pattern->height, pattern->state, offset_x, offset_y);
 }
-*/
 
-void render(struct Field *field, int generation)
+void render(struct Field *field)
 {
   int offset_x, offset_y;
   int size = CELL_SIZE - CELL_MARGIN;
@@ -235,5 +232,5 @@ void render(struct Field *field, int generation)
     }
   }
 
-  DrawText(TextFormat("Generation: %d\nPopulation: %d", generation, population), 10, 10, 26, RAYWHITE);
+  DrawText(TextFormat("Generation: %d\nPopulation: %d", field->generation, population), 10, 10, 26, RAYWHITE);
 }

@@ -10,6 +10,7 @@ struct Pattern {
   bool state[13][13];
 };
 
-void render(struct Field *field, int generation);
+void render(struct Field *field);
+void spawn(struct Field *field, char* pattern, int offset_x, int offset_y);
 
 #endif /* CONWAY_H */
