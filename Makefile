@@ -8,8 +8,17 @@ LDLIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 all: conway
 
-conway: conway.c conway.h field.c field.h
-	$(CC) conway.c field.c -o conway $(LDLIBS)
+conway: conway.o field.o pattern.o
+	$(CC) conway.o field.o pattern.o -o conway $(LDLIBS)
+
+conway.o: conway.c conway.h
+	$(CC) -c conway.c
+
+field.o: field.c field.h
+	$(CC) -c field.c
+
+pattern.o: pattern.c pattern.h
+	$(CC) -c pattern.c
 
 clean:
-	rm conway
+	rm conway conway.o field.o pattern.o
