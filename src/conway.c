@@ -54,7 +54,7 @@ int main()
       field->state[x * field->height + y] = ! field->state[x * field->height + y];
     }
 
-    if (IsKeyPressed(KEY_SPACE)) {
+    if (IsKeyPressed(KEY_P)) {
       paused = ! paused;
     }
 
