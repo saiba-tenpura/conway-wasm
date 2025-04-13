@@ -10,11 +10,22 @@
     <meta name="title" content="Conway's Game of Life - WASM">
 
     <style>
-      body { font-family: arial; margin: 0; padding: none; }
+      body {
+        font-family: arial;
+        margin: 0;
+        padding: none;
+      }
 
-      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      div.emscripten { text-align: center; }
-      div.emscripten_border { border: 1px solid black; }
+      .emscripten {
+        padding-right: 0;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+      div.emscripten {
+        text-align: center;
+      }
 
       /* NOTE: Canvas *must not* have any border or padding, or mouse coords will be wrong */
       canvas.emscripten {
@@ -22,11 +33,57 @@
         background: black;
         width: 100%;
       }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        background-color: #171717;
+        padding: 0.3rem 0.25rem;
+      }
+
+      .btn {
+        background-color: #686468;
+        border: 1px solid #686468;
+        border-radius: 50%;
+        cursor: pointer;
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      .btn:hover {
+        background-color: #8f8a8f;
+        border-color: #8f8a8f;
+      }
+
+      .btn:hover .icon > svg {
+        fill: #f5f5f5;
+      }
+
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon > svg {
+        fill: #e6e6e6;
+        width: 0.75rem;
+      }
     </style>
   </head>
   <body>
-    <div class="emscripten_border">
+    <div>
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+    </div>
+    <div class="controls">
+      <button class="btn">
+        <div id="play" class="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
+        </div>
+        <div id="pause" class="icon" style="display: none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112L0 400c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48L48 64zm192 0c-26.5 0-48 21.5-48 48l0 288c0 26.5 21.5 48 48 48l32 0c26.5 0 48-21.5 48-48l0-288c0-26.5-21.5-48-48-48l-32 0z"/></svg>
+        </div>
+      </button>
     </div>
     <script type='text/javascript' src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"> </script>
     <script type='text/javascript'>
