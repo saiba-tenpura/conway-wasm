@@ -1,6 +1,7 @@
 #include "field.h"
 #include "pattern.h"
 #include "conway.h"
+#include <emscripten/emscripten.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -12,9 +13,10 @@
 #define CELL_MARGIN 1
 #define TARGET_FPS 60
 
+bool paused = true;
+
 int main()
 {
-  bool paused = true;
   int width = 128, height = 72;
   struct Field *field = init_field(width, height);
   bool next_state[width][height];
@@ -106,4 +108,15 @@ void render(struct Field *field)
   }
 
   DrawText(TextFormat("Generation: %d\nPopulation: %d", field->generation, population), 10, 10, 26, RAYWHITE);
+}
+
+#ifdef __cplusplus
+#define EXTERN extern "C"
+#else
+#define EXTERN
+#endif
+
+EXTERN EMSCRIPTEN_KEEPALIVE
+void togglePause(int argc, char ** argv) {
+  paused = ! paused;
 }

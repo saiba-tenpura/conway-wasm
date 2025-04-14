@@ -30,7 +30,7 @@ ifeq ($(PLATFORM),$(filter $(PLATFORM),PLATFORM_WEB))
 
 	CFLAGS += -I $(LIB_DIR)/raylib/src
 
-	LDLIBS = -I $(LIB_DIR)/raylib/src -L $(LIB_DIR)/raylib/src -lraylib.web -s USE_GLFW=3 -s ASYNCIFY --shell-file src/shell.html
+	LDLIBS = -I $(LIB_DIR)/raylib/src -L $(LIB_DIR)/raylib/src -lraylib.web -s USE_GLFW=3 -s ASYNCIFY -s NO_EXIT_RUNTIME=1 -s "EXPORTED_RUNTIME_METHODS=['ccall']" --shell-file src/shell.html
 endif
 
 all: conway

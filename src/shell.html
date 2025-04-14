@@ -76,7 +76,7 @@
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
     </div>
     <div class="controls">
-      <button class="btn">
+      <button id="play-button" class="btn">
         <div id="play" class="icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
         </div>
@@ -85,7 +85,7 @@
         </div>
       </button>
     </div>
-    <script type='text/javascript' src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"> </script>
+    <script type='text/javascript' src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"></script>
     <script type='text/javascript'>
         function saveFileFromMEMFSToDisk(memoryFSname, localFSname)     // This can be called by C/C++ code
         {
@@ -174,11 +174,19 @@
         };
 
         Module.setStatus('Downloading...');
-
         window.onerror = function() {
             Module.setStatus('Exception thrown, see JavaScript console');
             Module.setStatus = function(text) { if (text) Module.printErr('[post-exception status] ' + text); };
         };
+
+        const playIcon = document.getElementById('play');
+        const pauseIcon = document.getElementById('pause');
+        const playButton = document.getElementById('play-button');
+        playButton.addEventListener('click', () => {
+          playIcon.style.display = playIcon.style.display === 'none' ? '' : 'none';
+          pauseIcon.style.display = pauseIcon.style.display === 'none' ? '' : 'none';
+          Module.ccall('togglePause');
+        });
     </script>
     {{{ SCRIPT }}}
   </body>
