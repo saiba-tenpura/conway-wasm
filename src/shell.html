@@ -76,7 +76,7 @@
       <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
     </div>
     <div class="controls">
-      <button id="play-button" class="btn">
+      <button id="play-button" class="btn" title="Play (p)">
         <div id="play" class="icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80L0 432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg>
         </div>
@@ -183,6 +183,7 @@
         const pauseIcon = document.getElementById('pause');
         const playButton = document.getElementById('play-button');
         playButton.addEventListener('click', () => {
+          playButton.title = playIcon.style.display === 'none' ? 'Play (p)' : 'Pause (p)';
           playIcon.style.display = playIcon.style.display === 'none' ? '' : 'none';
           pauseIcon.style.display = pauseIcon.style.display === 'none' ? '' : 'none';
           Module.ccall('togglePause');
