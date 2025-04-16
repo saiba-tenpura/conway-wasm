@@ -13,13 +13,18 @@
 #define CELL_MARGIN 1
 #define TARGET_FPS 60
 
+struct Field * field;
 bool paused = true;
 
 int main()
 {
-  int width = 128, height = 72;
-  struct Field *field = init_field(width, height);
-  bool next_state[width][height];
+  float delta_time = 0.0f;
+  float update_interval = 0.05f;
+  InitWindow(GetMonitorWidth(0), GetMonitorHeight(0), "Conway's Game of Life - WASM");
+  SetTargetFPS(TARGET_FPS);
+
+  field = init_field(GetScreenWidth() / CELL_SIZE, GetScreenHeight() / CELL_SIZE);
+  bool next_state[field->width][field->height];
 
   // bool pattern[13][13] = {
   //   {0, 1, 0},
@@ -42,17 +47,10 @@ int main()
   // spawn(field, "middleweight-spaceship", 7, 8);
   // spawn(field, "heavyweight-spaceship", 7, 8);
 
-  float delta_time = 0.0f;
-  float update_interval = 0.05f;
-  const int windowWidth = width * CELL_SIZE + CELL_MARGIN;
-  const int windowHeight = height * CELL_SIZE + CELL_MARGIN;
-  InitWindow(windowWidth, windowHeight, "Conway's Game of Life - WASM");
-  SetTargetFPS(TARGET_FPS);
-
   while (! WindowShouldClose()) {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-      int x = clamp(GetMouseX() / CELL_SIZE, 0, width - 1);
-      int y = clamp(GetMouseY() / CELL_SIZE, 0, height - 1);
+      int x = clamp(GetMouseX() / CELL_SIZE, 0, field->width - 1);
+      int y = clamp(GetMouseY() / CELL_SIZE, 0, field->height - 1);
       field->state[x * field->height + y] = ! field->state[x * field->height + y];
     }
 
@@ -65,7 +63,7 @@ int main()
     render(field);
     if (! paused && delta_time > update_interval) {
       field->field_ops->simulate(field, next_state);
-      memcpy(field->state, next_state, width * height * sizeof(bool));
+      memcpy(field->state, next_state, field->width * field->height * sizeof(bool));
       delta_time = 0.0f;
     } else {
       delta_time += GetFrameTime();
@@ -107,7 +105,7 @@ void render(struct Field *field)
     }
   }
 
-  DrawText(TextFormat("Generation: %d\nPopulation: %d", field->generation, population), 10, 10, 26, RAYWHITE);
+  DrawText(TextFormat("Generation: %d\nPopulation: %d", field->generation, population), 10, 10, 24, RAYWHITE);
 }
 
 #ifdef __cplusplus
@@ -117,6 +115,12 @@ void render(struct Field *field)
 #endif
 
 EXTERN EMSCRIPTEN_KEEPALIVE
-void togglePause(int argc, char ** argv) {
+void resizeScreen(int width, int height) {
+  SetWindowSize(width, height);
+  field = init_field(width / CELL_SIZE, height / CELL_SIZE);
+}
+
+EXTERN EMSCRIPTEN_KEEPALIVE
+void togglePause(int argc, char **argv) {
   paused = ! paused;
 }
