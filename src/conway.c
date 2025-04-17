@@ -24,8 +24,6 @@ int main()
   SetTargetFPS(TARGET_FPS);
 
   field = init_field(GetScreenWidth() / CELL_SIZE, GetScreenHeight() / CELL_SIZE);
-  bool next_state[field->width][field->height];
-
   // bool pattern[13][13] = {
   //   {0, 1, 0},
   //   {1, 1, 1},
@@ -62,8 +60,7 @@ int main()
     ClearBackground(DARKGRAY);
     render(field);
     if (! paused && delta_time > update_interval) {
-      field->field_ops->simulate(field, next_state);
-      memcpy(field->state, next_state, field->width * field->height * sizeof(bool));
+      field->field_ops->simulate(field);
       delta_time = 0.0f;
     } else {
       delta_time += GetFrameTime();

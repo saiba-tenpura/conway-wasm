@@ -15,7 +15,7 @@ struct Field {
 
 struct field_ops {
   void (*set)(struct Field *field, int width, int height, bool pattern[width][height], int offset_x, int offset_y);
-  void (*simulate)(struct Field *field, bool next_state[field->width][field->height]);
+  void (*simulate)(struct Field *field);
 };
 
 struct Field *init_field(int width, int height);

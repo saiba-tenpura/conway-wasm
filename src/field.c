@@ -14,9 +14,10 @@ void field_set(struct Field *field, int width, int height, bool pattern[13][13],
   }
 }
 
-void field_simulate(struct Field *field, bool next_state[field->width][field->height])
+void field_simulate(struct Field *field)
 {
   int count = 0;
+  bool next_state[field->width][field->height];
   for (int i = 0; i < field->width; i++) {
     for (int j = 0; j < field->height; j++) {
       count = survey(field, i, j);
@@ -30,6 +31,7 @@ void field_simulate(struct Field *field, bool next_state[field->width][field->he
     }
   }
 
+  memcpy(field->state, next_state, field->width * field->height * sizeof(bool));
   field->generation++;
 }
 
