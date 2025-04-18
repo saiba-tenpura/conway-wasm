@@ -113,8 +113,10 @@ void render(struct Field *field)
 
 EXTERN EMSCRIPTEN_KEEPALIVE
 void resizeScreen(int width, int height) {
-  SetWindowSize(width, height);
-  field = init_field(width / CELL_SIZE, height / CELL_SIZE);
+  const int fieldWidth = width / CELL_SIZE;
+  const int fieldHeight = height / CELL_SIZE;
+  SetWindowSize(fieldWidth * CELL_SIZE, fieldHeight * CELL_SIZE);
+  field = init_field(fieldWidth, fieldHeight);
 }
 
 EXTERN EMSCRIPTEN_KEEPALIVE
