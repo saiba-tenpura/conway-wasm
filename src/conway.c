@@ -112,6 +112,11 @@ void render(struct Field *field)
 #endif
 
 EXTERN EMSCRIPTEN_KEEPALIVE
+void forward(int argc, char **argv) {
+  field->field_ops->simulate(field);
+}
+
+EXTERN EMSCRIPTEN_KEEPALIVE
 void resizeScreen(int width, int height) {
   const int fieldWidth = width / CELL_SIZE;
   const int fieldHeight = height / CELL_SIZE;
