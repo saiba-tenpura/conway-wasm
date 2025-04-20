@@ -20,6 +20,7 @@ struct field_ops {
 
 struct Field *init_field(int width, int height);
 int survey(struct Field *field, int x, int y);
+bool check_bounds(struct Field *field, int x, int y);
 
 int clamp(int value, int min, int max);
 int wrap(int value, int size);

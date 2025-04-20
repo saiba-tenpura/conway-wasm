@@ -61,7 +61,7 @@ int survey(struct Field *field, int x, int y)
   int count = 0;
   for (int i = x - 1; i <= x + 1; i++) {
     for (int j = y - 1; j <= y + 1; j++) {
-      if (i == x && j == y) {
+      if ((i == x && j == y) || check_bounds(field, i, j)) {
          continue;
       }
 
@@ -74,6 +74,11 @@ int survey(struct Field *field, int x, int y)
   }
 
   return count;
+}
+
+bool check_bounds(struct Field *field, int x, int y)
+{
+  return x < 0 || x > field->width - 1 || y < 0 || y > field->height - 1;
 }
 
 int clamp(int value, int min, int max)
