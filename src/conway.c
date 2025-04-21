@@ -52,8 +52,16 @@ int main()
       field->state[x * field->height + y] = ! field->state[x * field->height + y];
     }
 
+    if (IsKeyPressed(KEY_N)) {
+      field->field_ops->simulate(field);
+    }
+
     if (IsKeyPressed(KEY_P)) {
       paused = ! paused;
+    }
+
+    if (IsKeyPressed(KEY_N)) {
+      field->field_ops->simulate(field);
     }
 
     BeginDrawing();
@@ -112,7 +120,7 @@ void render(struct Field *field)
 #endif
 
 EXTERN EMSCRIPTEN_KEEPALIVE
-void forward(int argc, char **argv) {
+void next(int argc, char **argv) {
   field->field_ops->simulate(field);
 }
 
