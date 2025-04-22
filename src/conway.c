@@ -60,8 +60,8 @@ int main()
       paused = ! paused;
     }
 
-    if (IsKeyPressed(KEY_N)) {
-      field->field_ops->simulate(field);
+    if (IsKeyPressed(KEY_R)) {
+      reset();
     }
 
     BeginDrawing();
@@ -122,6 +122,11 @@ void render(struct Field *field)
 EXTERN EMSCRIPTEN_KEEPALIVE
 void next(int argc, char **argv) {
   field->field_ops->simulate(field);
+}
+
+EXTERN EMSCRIPTEN_KEEPALIVE
+void reset() {
+  field = init_field(field->width, field->height);
 }
 
 EXTERN EMSCRIPTEN_KEEPALIVE
