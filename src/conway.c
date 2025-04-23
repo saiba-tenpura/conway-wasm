@@ -53,11 +53,11 @@ int main()
     }
 
     if (IsKeyPressed(KEY_N)) {
-      field->field_ops->simulate(field);
+      simulate();
     }
 
     if (IsKeyPressed(KEY_P)) {
-      paused = ! paused;
+      togglePause();
     }
 
     if (IsKeyPressed(KEY_R)) {
@@ -68,7 +68,7 @@ int main()
     ClearBackground(DARKGRAY);
     render(field);
     if (! paused && delta_time > update_interval) {
-      field->field_ops->simulate(field);
+      simulate();
       delta_time = 0.0f;
     } else {
       delta_time += GetFrameTime();
@@ -120,7 +120,7 @@ void render(struct Field *field)
 #endif
 
 EXTERN EMSCRIPTEN_KEEPALIVE
-void next(int argc, char **argv) {
+void simulate() {
   field->field_ops->simulate(field);
 }
 
@@ -138,6 +138,7 @@ void resizeScreen(int width, int height) {
 }
 
 EXTERN EMSCRIPTEN_KEEPALIVE
-void togglePause(int argc, char **argv) {
+void togglePause() {
   paused = ! paused;
 }
+
