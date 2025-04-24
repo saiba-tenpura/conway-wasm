@@ -1,4 +1,6 @@
-# Conway's Game of Life (WIP)
+# Conway's Game of Life
+
+![Screenshot](screenshot.png "Screenshot")
 
 An implementation of Conway's Game of Life written in C using the [raylib](https://github.com/raysan5/raylib/tree/master) game development library.
 
@@ -11,10 +13,12 @@ Compile for web usage.
 git clone --depth 1 https://github.com/raysan5/raylib.git lib/raylib
 cd lib/raylib/src/
 make PLATFORM=PLATFORM_WEB
-sudo make install
 
-# Compile conway
+# Compile
 make PLATFORM=PLATFORM_WEB
+
+# Serve files via webserver
+python -m http.server -d out/
 ```
 
 ## Desktop
@@ -26,6 +30,9 @@ cd raylib/src/
 make PLATFORM=PLATFORM_DESKTOP
 sudo make install
 
-# Compile conway
+# Compile
 make PLATFORM=PLATFORM_DESKTOP
+
+# Execute the binary
+./bin/conway
 ```
