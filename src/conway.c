@@ -110,7 +110,7 @@ void render(struct Field *field)
     }
   }
 
-  DrawText(TextFormat("Generation: %d\nPopulation: %d", field->generation, population), 10, 10, 24, RAYWHITE);
+  DrawText(TextFormat("Generation: %d\nPopulation: %d", field->generation, population), 10, 10, 24, GREEN);
 }
 
 #ifdef __cplusplus
